@@ -1,0 +1,15 @@
+{
+  "name": "bikes",
+  "private": false,
+  "version": "0.0.0",
+  "description": "An app to display bikes via a JSON feed.",
+  "repository": "https://github.com/smalsie/bikes",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "http-server": "^0.9.0"
+  },
+  "scripts": {
+    "start": "http-server ./app -a localhost -p 8000 -c-1"
+  }
+}
