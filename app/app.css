@@ -1,0 +1,40 @@
+/* The bikes have a box around them, most only have a left and bottom border
+    but the bikes on the top row also have a top border and the last bike in
+    each row have a right border. */
+
+.bikes {
+    padding: 10px;
+}
+
+.bike {
+    border-left: 1px solid #888;
+    border-bottom: 1px solid #888;
+    text-align: center;
+}
+
+/* The last bike in the row needs the right border */
+.bike-last-in-row {
+    border-right: 1px solid #888;
+    /* All of the other borders come from the left which causes a small offset. */
+    margin-right: 1px;
+}
+
+/* Need the top border on the top row */
+.bike-row-top {
+    border-top: 1px solid #888;
+}
+
+.bike img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    padding: 25px;
+}
+
+.bike-row {
+    /* Make each row the same height */
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
