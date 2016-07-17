@@ -1,8 +1,13 @@
 <div class="container bikes">
+    <div class="row" ng-repeat="class in $ctrl.classes">
 
-    <div class="row bike-row" ng-repeat="bikeRow in $ctrl.bikeRows">
+        <label><input type="checkbox" ng-model="class.checked" ng-change="$ctrl.filterChange()">{{class.name}}</label>
 
-        <div class="col-sm-3 bike" ng-class="{'bike-last-in-row': ($index + 1) == bikeRow.length, 'bike-row-top': $parent.$index == 0}" ng-repeat="bike in bikeRow">
+    </div>
+
+    <div class="row bike-row">
+
+        <div class="col-md-3 bike" ng-repeat="bike in $ctrl.bikes | filter:$ctrl.filterBikes">
 
             <img src="{{bike.image.thumb}}">
             <br/>

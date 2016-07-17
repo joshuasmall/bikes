@@ -16,25 +16,84 @@ angular.
         $http.get('//raw.githubusercontent.com/jujhars13/jujhars13/master/bikes.json').then(function(response) {
             var data = response.data.items;
 
-            self.bikeRows = [];
+            self.bikes = [];
+            self.classes = [];
 
-            var bikeRowIndex = 0;
-            var cols = 4;
-
-            // Group the bikes into rows
+            // Get the different classes
             for (var i = 0; i < data.length; i++) {
-                if (i % cols == 0 && i != 0)
-                    bikeRowIndex++;
-
-                // Create the array to hold the bikes in this row
-                if (typeof self.bikeRows[bikeRowIndex] === 'undefined')
-                    self.bikeRows[bikeRowIndex] = [];
 
                 // Urls are currently serivng a 403 so use this for now
                 data[i].image.thumb = 'bikes/bike.png';
 
-                self.bikeRows[bikeRowIndex].push(data[i]);
+                self.bikes.push(data[i]);
+
+                var classes = data[i].class;
+
+                // Add any new classes
+                for (var j = 0; j < classes.length; j++) {
+                    var canAdd = true;
+
+                    // Check the current classes
+                    for (var k = 0; k < self.classes.length; k++) {
+                        if (self.classes[k].name == classes[j]) {
+                            canAdd = false;
+                            break;
+                        }
+                    }
+
+                    if (canAdd) {
+                        self.classes.push({
+                            'name': classes[j],
+                            'checked' : false,
+                        });
+                    }
+                }
             }
+
+            self.showAll = true;
+
+            /**
+             * Changing the filters.
+             */
+            self.filterChange = function() {
+
+                for (var i = 0; i < self.classes.length; i++) {
+                    if (self.classes[i].checked) {
+                        self.showAll = false;
+                        return;
+                    }
+                }
+
+                self.showAll = true;
+            };
+
+            /**
+             * Filter the shown bikes.
+             *
+             * @param bike The bike to filter.
+             *
+             * @return boolean If this bike is included in the filtered results.
+             */
+            self.filterBikes = function(bike) {
+
+                if (self.showAll)
+                    return true;
+
+                var select = false;
+
+                for (var i = 0; i < self.classes.length; i++) {
+                    var bikeClass = self.classes[i];
+                    // This filter is relevant
+                    if (bikeClass.checked) {
+                        if (bike.class.indexOf(bikeClass.name) == -1)
+                            return false;
+                        else
+                            select = true;
+                    }
+                }
+
+                return select;
+            };
         });
     }]
     });
