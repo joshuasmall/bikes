@@ -5,11 +5,11 @@
  * @version 0.1
  */
 angular.
-    module('bikesApp').
+    module('bikesApp', ['ngCookies']).
     component('bikes', {
     templateUrl: 'bikes/bikes.template.html',
-    controller: ['$http',
-        function PhoneListController($http) {
+    controller: ['$http', '$cookies',
+        function PhoneListController($http, $cookies) {
         var self = this;
 
         // Load in the bikes
@@ -18,6 +18,7 @@ angular.
 
             self.bikes = [];
             self.classes = [];
+            self.showAll = true;
 
             // Get the different classes
             for (var i = 0; i < data.length; i++) {
@@ -28,6 +29,8 @@ angular.
                 self.bikes.push(data[i]);
 
                 var classes = data[i].class;
+
+                var cookie = $cookies.getObject('filters');
 
                 // Add any new classes
                 for (var j = 0; j < classes.length; j++) {
@@ -42,29 +45,38 @@ angular.
                     }
 
                     if (canAdd) {
+
+                        // Was this filter checked last time?
+                        var checked = typeof cookie !== 'undefined' && cookie.indexOf(classes[j]) != -1;
+
+                        if (checked)
+                            self.showAll = false;
+
                         self.classes.push({
                             'name': classes[j],
-                            'checked' : false,
+                            'checked': checked,
                         });
                     }
                 }
             }
 
-            self.showAll = true;
-
             /**
              * Changing the filters.
              */
             self.filterChange = function() {
+                var showAll = true;
+                var cookie = [];
 
                 for (var i = 0; i < self.classes.length; i++) {
                     if (self.classes[i].checked) {
-                        self.showAll = false;
-                        return;
+                        showAll = false;
+                        // Add this class to the cookie so that its checked on load
+                        cookie.push(self.classes[i].name);
                     }
                 }
 
-                self.showAll = true;
+                $cookies.putObject('filters', cookie);
+                self.showAll = showAll;
             };
 
             /**
