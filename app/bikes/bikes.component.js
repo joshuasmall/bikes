@@ -16,17 +16,12 @@ angular.
         $http.get('//raw.githubusercontent.com/jujhars13/jujhars13/master/bikes.json').then(function(response) {
             var data = response.data.items;
 
-            self.bikes = [];
+            self.bikes = data;
             self.classes = [];
             self.showAll = true;
 
             // Get the different classes
             for (var i = 0; i < data.length; i++) {
-
-                // Urls are currently serivng a 403 so use this for now
-                data[i].image.thumb = 'bikes/bike.png';
-
-                self.bikes.push(data[i]);
 
                 var classes = data[i].class;
 
