@@ -5,11 +5,11 @@
  * @version 0.1
  */
 angular.
-    module('bikesApp', ['ngCookies']).
+    module('bikesApp', ['ngCookies', 'ngDialog']).
     component('bikes', {
     templateUrl: 'bikes/bikes.template.html',
-    controller: ['$http', '$cookies',
-        function PhoneListController($http, $cookies) {
+    controller: ['$scope', '$http', '$cookies', 'ngDialog',
+        function PhoneListController($scope, $http, $cookies, ngDialog) {
         var self = this;
 
         // Load in the bikes
@@ -102,5 +102,22 @@ angular.
                 return select;
             };
         });
+
+        /**
+         * Create a bike popup showing off one bike.
+         *
+         * @param bike The bike to show.
+         */
+        self.bikePopup = function (bike) {
+
+            $scope.currentBike = bike;
+
+            ngDialog.open({
+                template: 'bikes/bikes-popup.template.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                width: "80%",
+            });
+        };
     }]
     });

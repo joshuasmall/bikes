@@ -1,0 +1,12 @@
+<div class="bike-popup">
+
+    <img src="{{currentBike.image.large}}">
+    <br/>
+    <h3>{{currentBike.name}}</h3>
+    <p>{{currentBike.description}}</p>
+
+    <p class="bike-class">
+        <span ng-repeat="class in currentBike.class">{{class | uppercase}}{{!$last ? ', ' : ''}}</span>
+    </p>
+
+</div>
