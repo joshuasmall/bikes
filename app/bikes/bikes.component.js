@@ -58,7 +58,9 @@ angular.
                         });
                     }
 
-                    bike['class'].push(formattedClass);
+                    // Ensure the bike only has this class once
+                    if (bike['class'].indexOf(formattedClass) == -1)
+                        bike['class'].push(formattedClass);
                 }
 
                 self.bikes.push(bike);
