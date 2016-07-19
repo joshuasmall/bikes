@@ -1,11 +1,17 @@
 <div class="container bikes">
 
-    <div class="row" ng-repeat="class in $ctrl.classes">
+    <div class="row">
 
         <div class="col-md-12">
 
-            <label><input type="checkbox" ng-model="class.checked" ng-change="$ctrl.filterChange()">{{class.name}}</label>
+            <h1>Bikes</h1>
 
+            <label class="class-label">Bike Class:</label>
+            <label class="class-label" ng-repeat="class in $ctrl.classes">
+                <input type="checkbox" ng-model="class.checked" ng-change="$ctrl.filterChange()">{{class.name}}
+            </label>
+
+            <p class="class-info">Click on a bike to see a bigger version!</p>
         </div>
 
     </div>
@@ -20,7 +26,7 @@
             <p>{{bike.description}}</p>
 
             <p class="bike-class">
-                <span ng-repeat="class in bike.class">{{class | uppercase}}{{!$last ? ', ' : ''}}</span>
+                <span ng-repeat="class in bike.class">{{class}}{{!$last ? ', ' : ''}}</span>
             </p>
         </div>
 

@@ -16,24 +16,29 @@ angular.
         $http.get('//raw.githubusercontent.com/jujhars13/jujhars13/master/bikes.json').then(function(response) {
             var data = response.data.items;
 
-            self.bikes = data;
+            self.bikes = [];
             self.classes = [];
             self.showAll = true;
 
             // Get the different classes
             for (var i = 0; i < data.length; i++) {
 
-                var classes = data[i].class;
-
+                var bike = data[i];
+                var classes = bike['class'];
                 var cookie = $cookies.getObject('filters');
+
+                bike['class'] = [];
 
                 // Add any new classes
                 for (var j = 0; j < classes.length; j++) {
                     var canAdd = true;
 
+                    // Make the class name have the first letter uppercase
+                    var formattedClass = self.firstCharUpper(classes[j]);
+
                     // Check the current classes
                     for (var k = 0; k < self.classes.length; k++) {
-                        if (self.classes[k].name == classes[j]) {
+                        if (self.classes[k]['name'] == formattedClass) {
                             canAdd = false;
                             break;
                         }
@@ -42,18 +47,23 @@ angular.
                     if (canAdd) {
 
                         // Was this filter checked last time?
-                        var checked = typeof cookie !== 'undefined' && cookie.indexOf(classes[j]) != -1;
+                        var checked = typeof cookie !== 'undefined' && cookie.indexOf(formattedClass) != -1;
 
                         if (checked)
                             self.showAll = false;
 
                         self.classes.push({
-                            'name': classes[j],
+                            'name': formattedClass,
                             'checked': checked,
                         });
                     }
+
+                    bike['class'].push(formattedClass);
                 }
+
+                self.bikes.push(bike);
             }
+
 
             /**
              * Changing the filters.
@@ -63,10 +73,10 @@ angular.
                 var cookie = [];
 
                 for (var i = 0; i < self.classes.length; i++) {
-                    if (self.classes[i].checked) {
+                    if (self.classes[i]['checked']) {
                         showAll = false;
                         // Add this class to the cookie so that its checked on load
-                        cookie.push(self.classes[i].name);
+                        cookie.push(self.classes[i]['name']);
                     }
                 }
 
@@ -118,6 +128,20 @@ angular.
                 scope: $scope,
                 width: "80%",
             });
+        };
+
+        /**
+         * Make the first letter of a string uppercase and the rest lowercase.
+         *
+         * @param input The input to modify.
+         *
+         * @return The modified input.
+         */
+        self.firstCharUpper = function(input) {
+
+            input = input.toLowerCase();
+
+            return input.substring(0, 1).toUpperCase() + input.substring(1);
         };
     }]
     });

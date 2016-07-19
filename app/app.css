@@ -6,6 +6,10 @@ body {
     padding: 10px;
 }
 
+.bike-row {
+    margin: 0 5px;
+}
+
 .bike {
     /* Use box shadow to have a collapsable border that works on smaller screens */
     box-shadow:
@@ -17,6 +21,7 @@ body {
     text-align: center;
     height: 350px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .bike img {
@@ -32,6 +37,18 @@ body {
     left: 0;
     right: 0;
     margin: 0 0;
+}
+
+.class-label {
+    margin: 5px;
+}
+
+.class-label input {
+    margin-right: 5px;
+}
+
+.class-info {
+    margin-left: 3px;
 }
 
 /* Bike popup */
